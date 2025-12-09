@@ -40,8 +40,3 @@ export const deleteJob = (jobId) => {
 
   return false;
 };
-
-// ✅ Get all jobs created by a specific recruiter
-export const getJobsByRecruiter = (recruiterEmail) => {
-  return jobs.filter((job) => job.recruiterEmail === recruiterEmail);
-};

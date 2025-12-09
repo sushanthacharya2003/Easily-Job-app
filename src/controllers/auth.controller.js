@@ -27,7 +27,7 @@ export const handleLogin = (req, res) => {
   const { email, password } = req.body;
   const user = authenticateUser(email, password);
   if (user) {
-    req.session.user = { id: user.id, name: user.name, role: user.role };
+    req.session.user = { id: user.id, name: user.name, role: user.role, email: user.email };
     return res.redirect('/jobs');
   } else {
     return res.render('auth/login', { error: 'Invalid email or password' });

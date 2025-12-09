@@ -1,6 +1,7 @@
 // Job controller placeholders
 import { createJob, getJobById, getAllJobs, updateJob, deleteJob,getJobsByRecruiter } from "../models/job.model.js";
 
+
 export const listJobs = (req, res) => {
   const jobs = getAllJobs();
   res.render('jobs/job-list', { jobs });
@@ -12,15 +13,10 @@ export const getJob = (req, res) => {
   res.render('jobs/job-details', { job });
 };
 
-export const listRecruiterJobs = (req, res) => {
-  const recruiterEmail = req.session.user.email;
-  const jobs = getJobsByRecruiter(recruiterEmail);
-  res.render('jobs/job-details', { jobs });
-}
 
 export const postJob = (req, res) => {
   const { title, description, company } = req.body;
-  const newJob = { id: Date.now(), title, description, company,recruiterName: req.session.user.name, recruiterEmail: req.session.user.email };
+  const newJob = { id: Date.now(), title, description, company};
   // Save newJob to database (not implemented)
   createJob(newJob);
   return res.redirect('/jobs');
