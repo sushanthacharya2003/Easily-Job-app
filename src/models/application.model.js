@@ -20,3 +20,4 @@ export const getApplicationsByUserEmail = (email) => {
     (application) => application.userEmail === email
   );
 };
+
