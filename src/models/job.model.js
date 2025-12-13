@@ -1,42 +1,44 @@
-// In-memory storage for jobs
-export const jobs = [];
+// src/models/job.model.js
 
-// ✅ Create a new job (Recruiter posts a job)
+const jobs = [];
+
+// Create job
 export const createJob = (job) => {
   jobs.push(job);
+  return job;
+};
+
+// Get all jobs
+export const getAllJobs = () => jobs;
+
+// Get job by ID
+export const getJobById = (id) =>
+  jobs.find((job) => job.id === id);
+
+// Update job
+export const updateJob = (id, updatedData) => {
+  const index = jobs.findIndex((job) => job.id === id);
+  if (index === -1) return false;
+
+  jobs[index] = { ...jobs[index], ...updatedData };
   return true;
 };
 
-// ✅ Get all jobs (for job seekers)
-export const getAllJobs = () => {
-  return jobs;
+// Delete job
+export const deleteJob = (id) => {
+  const index = jobs.findIndex((job) => job.id === id);
+  if (index === -1) return false;
+
+  jobs.splice(index, 1);
+  return true;
 };
 
-// ✅ Get single job by ID (job details page)
-export const getJobById = (jobId) => {
-  return jobs.find((job) => job.id === jobId);
+// Add applicant
+export const addApplicantToJob = (jobId, applicant) => {
+  const job = getJobById(jobId);
+  if (!job) return false;
+
+  job.applicants.push(applicant);
+  return true;
 };
 
-// ✅ Update a job (Recruiter edits job)
-export const updateJob = (jobId, updatedData) => {
-  const index = jobs.findIndex((job) => job.id === jobId);
-
-  if (index !== -1) {
-    jobs[index] = { ...jobs[index], ...updatedData };
-    return true;
-  }
-
-  return false;
-};
-
-// ✅ Delete a job (Recruiter deletes job)
-export const deleteJob = (jobId) => {
-  const index = jobs.findIndex((job) => job.id === jobId);
-
-  if (index !== -1) {
-    jobs.splice(index, 1);
-    return true;
-  }
-
-  return false;
-};

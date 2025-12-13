@@ -1,61 +1,29 @@
-// Application controller placeholders
-import { applyForJob,getApplicationsByJobId,getApplicationsByUserEmail } from "../models/application.model";
-import { getJobById } from "../models/job.model.js";
-
-export const showApplyForm = (req, res) => {
-  const jobId = Number(req.params.jobId);
-  const job=getJobById(jobId);
-  if (!job)
-    {
-      return res.status(404).send('Job not found')
-  }
-  else{
-  res.render('applications/apply-job', { job });
-  }
-};
+// src/controllers/application.controller.js
+import { applyForJob, getApplicationsByJobId } from "../models/application.model.js";
 
 export const submitApplication = (req, res) => {
-  const jobId = Number( req.params.jobId);
-  const job=getJobById(jobId);
-  if (!job)
-    {
-      return res.status(404).send('Job not found')
-  }
-  const resumeFile= req.file? req.file.fileName: null;
-  const {name, email,coverLetter}= req.body;
-  const newApplication={
-    id: Date.now(),
-    jobId,
-    applicantName:name,
-    userEmail:email,
-    resumeFile,
-    coverLetter,
-    appliedAt: new Date()
-  };
-  applyForJob(newApplication);
-  return res.render("msgPage",{message:"Application submitted successfully!"});
-}
-
-export const listApplicationsForJob = (req, res) => {
-
   const jobId = Number(req.params.jobId);
-  const job=getJobById(jobId);
-  if (!job) {
-    return res.status(404).send('No applications found for this job');
-  }
-  const applications = getApplicationsByJobId(jobId);
-  res.render('applications/applicants', { job, applications });
-}
+  const { email, name, contact } = req.body;
 
-export const listApplicationsForUser = (req, res) => {
-
-  const userEmail = req.session.user.email;
-  const applications = getApplicationsByUserEmail(userEmail);
-  if (applications.length === 0) {
-    return res.status(404).send('No applications found for this user');
+  if (!email || !name || !req.file) {
+    return res.status(400).send("All fields required");
   }
-  else{
-  res.render('applications/applicant-list', { applications, userEmail });
-}
-}
+
+  const application = {
+    jobId,
+    userEmail: email,
+    name,
+    contact,
+    resume: req.file.filename,
+    appliedAt: new Date(),
+  };
+
+  applyForJob(application);
+  res.redirect("/jobs");
+};
+
+export const listApplicants = (req, res) => {
+  const applications = getApplicationsByJobId(Number(req.params.id));
+  res.render("applications/all-applicants", { applications });
+};
 

@@ -1,31 +1,30 @@
 import express from "express";
 import {
-  showApplyForm,
   submitApplication,
-  listApplicationsForJob
+  listApplicants
 } from "../controllers/application.controller.js";
 
+import { auth, recruiterOnly } from "../middleware/auth.middleware.js";
 import upload from "../middleware/upload.middleware.js";
-import auth from "../middleware/auth.middleware.js";
+import { sendConfirmationMail } from "../middleware/mail.middleware.js";
 
 const router = express.Router();
 
-// Show apply form (job seeker)
-router.get("/apply/:jobId", auth, showApplyForm);
-
-// Submit application with resume upload
+// job seeker applies
 router.post(
   "/apply/:jobId",
   auth,
   upload.single("resume"),
+  sendConfirmationMail,
   submitApplication
 );
 
-// Recruiter: view all applicants for a job
+// recruiter views applicants
 router.get(
-  "/:jobId/applicants",
+  "/applicants/:jobId",
   auth,
-  listApplicationsForJob
+  recruiterOnly,
+  listApplicants
 );
 
 export default router;
