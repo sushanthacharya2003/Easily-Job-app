@@ -43,6 +43,12 @@ app.use("/auth", authRoutes);
 app.use("/jobs", jobRoutes);
 app.use("/applications", applicationRoutes);
 
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
+
+
 // ✅ Default Route
 app.get("/", (req, res) => {
   res.redirect("/jobs");

@@ -2,16 +2,16 @@
 import { registerUser, authenticateUser } from "../models/user.model.js";
 
 export const register = (req, res) => {
-  res.render('auth/user-register');
+  res.render('auth/register');
 };
 
 export const login = (req, res) => {
-  res.render('auth/user-login');
+  res.render('auth/login');
 };
 
 export const logout = (req, res) => {
   req.session.destroy(() => {
-    res.redirect('/auth/user-login');
+    res.redirect('/auth/login');
   })
 };
 
