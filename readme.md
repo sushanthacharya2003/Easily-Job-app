@@ -3,7 +3,7 @@ Easily – Job Portal (Node.js + Express + EJS)
 A simple job portal web application built using Node.js, Express, EJS, and session-based authentication.
 It supports job listings, job applications with resume upload, recruiter actions, and basic user authentication.
 
-This project focuses more on backend flow + MVC structure than flashy UI (yes, that’s intentional 😄).
+This project focuses more on backend flow + MVC structure .
 
 Tech Stack
 
